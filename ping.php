@@ -1,5 +1,10 @@
 #!/usr/bin/php
 <?php
+	$PID = __DIR__.'/.pid';
+
+	if(file_exists($PID)) die("Ja tem um processo em andamento\n");
+	file_put_contents($PID, "");
+
 	date_default_timezone_set('America/Sao_Paulo');
 	
 	require 'libs/PHPMailer/class.phpmailer.php';
@@ -42,4 +47,5 @@
 	}
 	
 	curl_close($curl);
+	unlink($PID);
 ?>
