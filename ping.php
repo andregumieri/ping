@@ -27,7 +27,7 @@
 
 	if($header===false) {
 		if(!file_exists($ERROR_FILE)) file_put_contents($ERROR_FILE, mktime());
-		echo "Internet fora:\n";
+		echo date("d/m/Y H:i:s") . " - Internet fora:\n";
 		echo curl_errno($curl);
 		echo " - ";
 		echo curl_error($curl);
@@ -43,7 +43,7 @@
 			file_put_contents(__DIR__.'/reports.txt', date("d/m/y H:i:s") . "\n" . $mensagem . "\n\n", FILE_APPEND);
 			unlink($ERROR_FILE);
 		}
-		echo "Tem conexão\n";
+		echo date("d/m/Y H:i:s") . " - Tem conexão\n";
 	}
 	
 	curl_close($curl);
