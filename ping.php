@@ -35,10 +35,14 @@
 	} else {
 		if(file_exists($ERROR_FILE)) {
 			$time = intval(file_get_contents($ERROR_FILE));
-			$tempo_num = mktime()-$time;
-			$tempo_extenso = tempo_extenso($tempo_num);	
+			$time_agora = mktime();
+			$tempo_num = $time_agora-$time;
+			$tempo_extenso = tempo_extenso($tempo_num);
 
-			$mensagem = "A internet ficou fora por " . $tempo_extenso;
+			$das = date("d/m/Y H:i:s", $time);
+			$ate = date("d/m/Y H:i:s", $time_agora);	
+
+			$mensagem = "A internet ficou fora por " . $tempo_extenso . "<br />{$das} até {$ate}";
 			gmail(EMAIL, '[Ping] offline report', $mensagem);
 			file_put_contents(__DIR__.'/reports.txt', date("d/m/y H:i:s") . "\n" . $mensagem . "\n\n", FILE_APPEND);
 			unlink($ERROR_FILE);
