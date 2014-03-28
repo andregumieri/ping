@@ -10,22 +10,20 @@
 	require 'libs/PHPMailer/class.phpmailer.php';
 	require 'functions/gmail.php';
 	require 'functions/tempo_extenso.php';
+	require 'functions/online.php';
 	if(!require 'settings.php') die("Create a settings.php file");
 
 	$ERROR_FILE = __DIR__.'/.erro';
 
-	$curl = curl_init();
-	curl_setopt($curl, CURLOPT_URL, TEST_SITE);
-	curl_setopt($curl, CURLOPT_FILETIME, true);
-	curl_setopt($curl, CURLOPT_NOBODY, true);
-	curl_setopt($curl, CURLOPT_HEADER, true);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-	$header = curl_exec($curl);
-	$info = curl_getinfo($curl);
+	$SITES = explode(";", TEST_SITE);
+	$totalonline = 0;
+
+	foreach($SITES as $SITE) {
+		$totalonline+=online(trim($SITE));
+	}
 	
 
-	if($header===false) {
+	if($totalonline==0) {
 		if(!file_exists($ERROR_FILE)) file_put_contents($ERROR_FILE, mktime());
 		echo date("d/m/Y H:i:s") . " - Internet fora:\n";
 		echo curl_errno($curl);
@@ -47,9 +45,9 @@
 			file_put_contents(__DIR__.'/reports.txt', date("d/m/y H:i:s") . "\n" . str_replace("<br />", "\n", $mensagem) . "\n\n", FILE_APPEND);
 			unlink($ERROR_FILE);
 		}
-		echo date("d/m/Y H:i:s") . " - Tem conexão\n";
+		echo date("d/m/Y H:i:s") . " - Tem conexão ({$totalonline} de " . count($SITES) . ")\n";
 	}
 	
-	curl_close($curl);
+	
 	unlink($PID);
 ?>

@@ -1,9 +1,9 @@
 <?php 
 	/**
 	 * TEST_SITE
-	 * Site para checar a conexão
+	 * Sites para checar a conexão (separado por ponto-e-virgula)
 	 */
-	define('TEST_SITE', 'www.google.com');
+	define('TEST_SITE', 'www.google.com;www.bing.com;www.andregumieri.com');
 
 
 	/**
